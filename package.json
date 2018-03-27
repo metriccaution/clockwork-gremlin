@@ -1,0 +1,19 @@
+{
+  "name": "clockwork-gremlin",
+  "version": "1.0.0",
+  "description": "A super-simple time tracking command-line process",
+  "main": "app.js",
+  "scripts": {
+    "prettier-watch": "onchange '**/*.js' '**/*.md' -- prettier --write {{changed}}"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "onchange": "^3.3.0",
+    "prettier": "^1.11.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0"
+  }
+}
