@@ -1,72 +1,20 @@
-const { readFile, writeFile } = require("fs");
-const { promisify } = require("util");
-const isArray = require("lodash/isArray");
-const groupBy = require("lodash/fp/groupBy");
-const pick = require("lodash/pick");
-const values = require("lodash/values");
-const fromPairs = require("lodash/fromPairs");
-const moment = require("moment");
+const flow = require("lodash/flow");
+const { join } = require("path");
+
+const sumTimes = require("./lib/sumTimes");
+const formatDays = require("./lib/formatDays");
+const db = require("./lib/db");
 
 const config = {
-  db: "db.json",
+  db: join(process.cwd(), "db.json"),
   displayDays: 20
 };
 
-const readDb = file =>
-  promisify(readFile)(file, "utf8")
-    .then(JSON.parse)
-    .catch(() => [])
-    .then(data => (isArray(data) ? data : []));
-
-const writeDb = (file, data) =>
-  promisify(writeFile)(file, JSON.stringify(data, null, 2), {
-    encoding: "utf8"
-  });
-
+const saved = db(config.db);
 const args = () => process.argv.slice(2);
 
 const printSummary = () =>
-  readDb(config.db)
-    // Filter out bad data & simplify model
-    .then(intervals =>
-      intervals
-        .filter(i => i.start && i.stop && i.start < i.stop)
-        .map(i => ({ start: i.start, length: i.stop - i.start }))
-    )
-    // Group by day
-    .then(
-      groupBy(interval => Math.floor(interval.start / (1000 * 60 * 60 * 24)))
-    )
-    // Only get the top few days
-    .then(dayGroups =>
-      pick(
-        dayGroups,
-        Object.keys(dayGroups)
-          .sort((a, b) => b - a)
-          .slice(0, config.displayDays)
-      )
-    )
-    // Sum up each day
-    .then(dayGroups =>
-      values(dayGroups)
-        .map(day =>
-          day.reduce((summed, entry) => ({
-            start: summed.start,
-            length: summed.length + entry.length
-          }))
-        )
-        .map(day => [day.start, day.length])
-        .sort((pair1, pair2) => pair2[0] - pair1[0])
-    )
-    // Format each day
-    .then(days =>
-      days.map(day => {
-        const hoursWorked = (day[1] / (1000 * 60 * 60)).toFixed(1);
-        return moment(day[0]).format("DD/MM/YYYY") + " - " + hoursWorked;
-      })
-    )
-    // Print out each day
-    .then(days => days.forEach(day => console.log(day)));
+  saved.read().then(flow(sumTimes, formatDays, console.log));
 
 // If no arguments are passed, print out worked time
 if (args().length === 0) {
@@ -110,15 +58,17 @@ if (args().length === 0) return;
 // Update the db
 switch (args()[0].toLocaleLowerCase()) {
   case "start":
-    return readDb(config.db)
+    return saved
+      .read()
       .then(d => setStart(d, getTime()))
-      .then(d => writeDb(config.db, d))
+      .then(saved.write)
       .then(printSummary)
       .catch(e => console.log("Oh no!", e));
   case "stop":
-    return readDb(config.db)
+    return saved
+      .read()
       .then(d => setStop(d, getTime()))
-      .then(d => writeDb(config.db, d))
+      .then(saved.write)
       .then(printSummary)
       .catch(e => console.log("Oh no!", e));
   default:
