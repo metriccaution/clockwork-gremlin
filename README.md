@@ -17,7 +17,7 @@ The CLI allows for updating the most recent interval, or creating new intervals.
 
 To create a new interval or update the start time of the most recent interval:
 
-    node app start [time]
+    npm start -- start [time]
 
 A new interval will be created if the most recent interval has a stop time, otherwise, the most recent interval will be updated.
 
@@ -25,8 +25,8 @@ A new interval will be created if the most recent interval has a stop time, othe
 
 To finish an interval (or update the stop time of the most recent interval):
 
-    node app stop [time]
+    npm start -- stop [time]
 
 ### Viewing tracked time
 
-Type `node app` to see a report of the most recent day's time.
+Type `npm start` to see a report of the most recent day's time.

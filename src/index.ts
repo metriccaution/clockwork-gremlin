@@ -53,28 +53,26 @@ const setStop = (intervals: DateRange[], stop: number) => {
   return intervals;
 };
 
-if (args().length === 0) process.exit(0);
-
-console.log(args()[0].toLocaleLowerCase())
-
-// Update the db
-switch (args()[0].toLocaleLowerCase()) {
-  case "start":
-    saved
-      .read()
-      .then(d => setStart(d, getTime()))
-      .then(saved.write)
-      .then(printSummary)
-      .catch(e => console.log("Oh no!", e));
-    break;
-  case "stop":
-    saved
-      .read()
-      .then(d => setStop(d, getTime()))
-      .then(saved.write)
-      .then(printSummary)
-      .catch(e => console.log("Oh no!", e));
-    break;
-  default:
-    console.log("I don't know what to do with '" + args()[0] + "'");
+if (args().length > 1) {
+  // Update the db
+  switch (args()[0].toLocaleLowerCase()) {
+    case "start":
+      saved
+        .read()
+        .then(d => setStart(d, getTime()))
+        .then(saved.write)
+        .then(printSummary)
+        .catch(e => console.log("Oh no!", e));
+      break;
+    case "stop":
+      saved
+        .read()
+        .then(d => setStop(d, getTime()))
+        .then(saved.write)
+        .then(printSummary)
+        .catch(e => console.log("Oh no!", e));
+      break;
+    default:
+      console.log("I don't know what to do with '" + args()[0] + "'");
+  }
 }
