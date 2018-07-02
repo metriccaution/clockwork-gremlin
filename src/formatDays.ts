@@ -1,11 +1,7 @@
 import * as moment from "moment";
 import { join, flow, values } from "lodash";
 import { reduce, map } from "lodash/fp";
-import { DateRange, SummedInterval } from "./date-range";
-
-interface IntervalsByStart {
-  [index: string]: SummedInterval;
-}
+import { SummedInterval, IntervalsByStart } from "./date-range";
 
 const joinStrings = (...strings: string[]) => join(strings, "\n");
 const formatMillis = (millis: number) => (millis / (1000 * 60 * 60)).toFixed(1);

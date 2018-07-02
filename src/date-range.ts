@@ -7,3 +7,7 @@ export interface SummedInterval {
   timestamp: number;
   sum: number;
 }
+
+export interface IntervalsByStart {
+  [index: string]: SummedInterval;
+}

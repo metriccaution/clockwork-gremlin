@@ -1,13 +1,10 @@
 import { flow, filter, values, uniq } from "lodash/fp";
-import { DateRange, SummedInterval } from "./date-range";
+import { DateRange, IntervalsByStart } from "./date-range";
 
-interface IntervalsByStart {
-  [index: string]: SummedInterval;
-}
+const isValid = (i: DateRange): boolean =>
+  Boolean(i.start && i.stop && i.start < i.stop);
 
-const isValid = (i: DateRange) => i.start && i.stop && i.start < i.stop;
-
-const calculateLength = (i: DateRange) => i.stop - i.start;
+const calculateLength = (i: DateRange) => (i.stop || i.start) - i.start;
 
 const daysSinceEpoch = (interval: DateRange) =>
   Math.floor(interval.start / (1000 * 60 * 60 * 24));
