@@ -4,7 +4,9 @@
   "description": "A super-simple time tracking command-line process",
   "main": "app.js",
   "scripts": {
-    "prettier-watch": "onchange '**/*.js' '**/*.md' -- prettier --write {{changed}}"
+    "start": "node dist/index",
+    "tsc": "tsc",
+    "prettier-watch": "onchange '**/*.ts' '**/*.md' -- prettier --write {{changed}}"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +15,10 @@
     "prettier": "^1.11.1"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.110",
+    "@types/node": "^10.5.1",
     "lodash": "^4.17.5",
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "typescript": "^2.9.2"
   }
 }

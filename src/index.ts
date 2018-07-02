@@ -1,9 +1,9 @@
-const flow = require("lodash/flow");
-const { join } = require("path");
-
-const sumTimes = require("./lib/sumTimes");
-const formatDays = require("./lib/formatDays");
-const db = require("./lib/db");
+import { flow } from "lodash";
+import { join } from "path";
+import { DateRange } from "./date-range";
+import sumTimes from "./sumTimes";
+import formatDays from "./formatDays";
+import db from "./db";
 
 const config = {
   db: join(process.cwd(), "db.json"),
@@ -39,13 +39,13 @@ const getTime = () => {
 };
 
 // Either put a new start time in, or overwrite the last one
-const setStart = (intervals, start) =>
+const setStart = (intervals: DateRange[], start: number) =>
   Boolean(intervals.length && intervals[intervals.length - 1].stop)
     ? intervals.concat({ start })
     : intervals.slice(0, intervals.length - 1).concat({ start });
 
 // Either set a stop time on the last interval, or do nothing
-const setStop = (intervals, stop) => {
+const setStop = (intervals: DateRange[], stop: number) => {
   if (Boolean(intervals.length)) {
     intervals[intervals.length - 1].stop = stop;
   }
@@ -53,24 +53,28 @@ const setStop = (intervals, stop) => {
   return intervals;
 };
 
-if (args().length === 0) return;
+if (args().length === 0) process.exit(0);
+
+console.log(args()[0].toLocaleLowerCase())
 
 // Update the db
 switch (args()[0].toLocaleLowerCase()) {
   case "start":
-    return saved
+    saved
       .read()
       .then(d => setStart(d, getTime()))
       .then(saved.write)
       .then(printSummary)
       .catch(e => console.log("Oh no!", e));
+    break;
   case "stop":
-    return saved
+    saved
       .read()
       .then(d => setStop(d, getTime()))
       .then(saved.write)
       .then(printSummary)
       .catch(e => console.log("Oh no!", e));
+    break;
   default:
-    return console.log("I don't know what to do with '" + args()[0] + "'");
+    console.log("I don't know what to do with '" + args()[0] + "'");
 }

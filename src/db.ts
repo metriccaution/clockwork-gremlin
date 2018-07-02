@@ -1,19 +1,19 @@
-const { readFile, writeFile } = require("fs");
-const { promisify } = require("util");
-const isArray = require("lodash/isArray");
+import { readFile, writeFile } from "fs";
+import { promisify } from "util";
+import { isArray } from "lodash";
 
-const readDb = file => () =>
+const readDb = (file: string) => () =>
   promisify(readFile)(file, "utf8")
     .then(JSON.parse)
     .catch(() => [])
     .then(data => (isArray(data) ? data : []));
 
-const writeDb = file => data =>
+const writeDb = (file: string) => (data: any) =>
   promisify(writeFile)(file, JSON.stringify(data, null, 2), {
     encoding: "utf8"
   });
 
-module.exports = file => ({
+export default (file: string) => ({
   read: readDb(file),
   write: writeDb(file)
 });
