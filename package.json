@@ -2,23 +2,45 @@
   "name": "clockwork-gremlin",
   "version": "1.0.0",
   "description": "A super-simple time tracking command-line process",
-  "main": "app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index",
     "tsc": "tsc",
-    "prettier-watch": "onchange '**/*.ts' '**/*.md' -- prettier --write {{changed}}"
+    "format": "prettier --write 'src/**/*'",
+    "prettier-watch": "onchange '**/*.ts' '**/*.md' -- prettier --write {{changed}}",
+    "unit-test": "ava",
+    "test": "npm run format && npm run tsc && npm run unit-test"
   },
-  "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "onchange": "^3.3.0",
-    "prettier": "^1.11.1"
+  "ava": {
+    "compileEnhancements": false,
+    "files": [
+      "src/**/*.test.ts"
+    ],
+    "sources": [
+      "src/**/*.ts"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ]
   },
   "dependencies": {
-    "@types/lodash": "^4.14.110",
-    "@types/node": "^10.5.1",
-    "lodash": "^4.17.5",
-    "moment": "^2.21.0",
-    "typescript": "^2.9.2"
+    "@types/convict": "^4.2.0",
+    "@types/lodash": "^4.14.116",
+    "@types/node": "^10.10.1",
+    "convict": "^4.3.2",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
+    "typescript": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/sinon": "^5.0.2",
+    "ava": "^1.0.0-beta.8",
+    "onchange": "^3.3.0",
+    "prettier": "^1.11.1",
+    "sinon": "^6.3.4",
+    "ts-node": "^7.0.1"
   }
 }
