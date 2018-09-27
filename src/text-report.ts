@@ -2,8 +2,8 @@
  * Ways to group up time logs
  */
 
-import { TimeInterval } from "./db";
 import * as moment from "moment";
+import { TimeInterval } from "./db";
 
 type DateGrouping = (date: Date) => string;
 type Reporter<T> = (times: TimeInterval[]) => T;
@@ -42,5 +42,5 @@ const groupingReporter = (grouping: DateGrouping): Reporter<string> => {
   };
 };
 
-export const dailyReporter: Reporter<String> = groupingReporter(dayGrouping);
-export const weeklyReporter: Reporter<String> = groupingReporter(weekGrouping);
+export const dailyReporter: Reporter<string> = groupingReporter(dayGrouping);
+export const weeklyReporter: Reporter<string> = groupingReporter(weekGrouping);

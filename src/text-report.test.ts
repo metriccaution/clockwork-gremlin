@@ -1,6 +1,6 @@
 import test, { Macro } from "ava";
-import { dailyReporter } from "./text-report";
 import { TimeInterval } from "./db";
+import { dailyReporter } from "./text-report";
 
 /*
  * Daily reports

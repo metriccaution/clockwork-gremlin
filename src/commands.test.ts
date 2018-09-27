@@ -1,6 +1,6 @@
 import test from "ava";
-import { stop, start } from "./commands";
 import * as sinon from "sinon";
+import { start, stop } from "./commands";
 
 test("Passing a valid date to stop stops at that point", async t => {
   const date = new Date();

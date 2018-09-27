@@ -1,6 +1,12 @@
-import { TimeDb } from "./db";
 import { parseDate } from "./date";
+import { TimeDb } from "./db";
 import { dailyReporter, weeklyReporter } from "./text-report";
+
+// tslint:disable-next-line:no-console
+const reportText = (...data: string[]) => console.log(...data);
+
+// tslint:disable-next-line:no-console
+export const handleError = (e: Error) => console.log("Error", e);
 
 export const stop = async (db: TimeDb, time: string, project: string) => {
   const date = parseDate(time);
@@ -15,11 +21,11 @@ export const start = async (db: TimeDb, time: string, project: string) => {
 export const view = async (db: TimeDb) => {
   const data = await db.fetchIntervals();
 
-  console.log("Days:");
-  console.log(dailyReporter(data), "\n");
+  reportText("Days:");
+  reportText(dailyReporter(data), "\n");
 
-  console.log("Weeks:");
-  console.log(weeklyReporter(data), "\n");
+  reportText("Weeks:");
+  reportText(weeklyReporter(data), "\n");
 };
 
-export const help = () => console.log("TODO");
+export const help = () => reportText("TODO");

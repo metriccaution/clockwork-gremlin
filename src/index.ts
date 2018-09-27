@@ -1,7 +1,7 @@
-import { TimeDb, FileDb } from "./db";
-import config, { Commands } from "./config";
-import { help, start, stop, view } from "./commands";
 import { existsSync, lstatSync } from "fs";
+import { handleError, help, start, stop, view } from "./commands";
+import config, { Commands } from "./config";
+import { FileDb, TimeDb } from "./db";
 
 const baseConfig = config.get();
 const { configFile, project } = baseConfig;
@@ -19,13 +19,13 @@ switch (args.command) {
     help();
     break;
   case Commands.Start:
-    start(db, args.time, project);
+    start(db, args.time, project).catch(handleError);
     break;
   case Commands.Stop:
-    stop(db, args.time, project);
+    stop(db, args.time, project).catch(handleError);
     break;
   case Commands.View:
-    view(db);
+    view(db).catch(handleError);
     break;
   default:
     throw new Error(`Unknown command "${args.command}"`);

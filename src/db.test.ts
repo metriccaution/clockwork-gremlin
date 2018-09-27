@@ -1,10 +1,10 @@
 import test, { Macro } from "ava";
 import {
   compareTimes,
-  TimeInterval,
   parseInterval,
   parseTimestampFile,
-  stringify
+  stringify,
+  TimeInterval
 } from "./db";
 
 /*

@@ -8,7 +8,8 @@
     "format": "prettier --write 'src/**/*'",
     "prettier-watch": "onchange '**/*.ts' '**/*.md' -- prettier --write {{changed}}",
     "unit-test": "ava",
-    "test": "npm run format && npm run tsc && npm run unit-test"
+    "lint": "tslint -p . -c tslint.json --fix 'src/**/*.ts'",
+    "test": "npm run lint && npm run format && npm run tsc && npm run unit-test"
   },
   "license": "ISC",
   "ava": {
@@ -33,6 +34,7 @@
     "convict": "^4.4.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.1.1"
   },
   "devDependencies": {
@@ -41,6 +43,7 @@
     "onchange": "^4.1.0",
     "prettier": "^1.11.1",
     "sinon": "^6.3.4",
-    "ts-node": "^7.0.1"
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0"
   }
 }

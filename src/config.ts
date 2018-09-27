@@ -1,6 +1,6 @@
 import * as convict from "convict";
-import { resolve } from "path";
 import { values } from "lodash";
+import { resolve } from "path";
 import { parseDate } from "./date";
 
 export enum Commands {
