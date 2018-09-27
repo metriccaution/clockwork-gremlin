@@ -15,14 +15,15 @@ test("Passing a valid date to stop stops at that point", async t => {
       startNewInterval,
       updateCurrentInterval
     },
-    date.toISOString()
+    date.toISOString(),
+    "Time"
   );
 
   t.false(fetchIntervals.called);
   t.false(startNewInterval.called);
   t.true(updateCurrentInterval.called);
 
-  t.deepEqual(updateCurrentInterval.args, [[date]]);
+  t.deepEqual(updateCurrentInterval.args, [[date, "Time"]]);
 });
 
 test("Passing an invalid date to stop throws up and doesn't call the DB", async t => {
@@ -37,7 +38,8 @@ test("Passing an invalid date to stop throws up and doesn't call the DB", async 
         startNewInterval,
         updateCurrentInterval
       },
-      "=^^="
+      "=^^=",
+      "Time"
     );
     t.fail();
   } catch (e) {
@@ -62,14 +64,15 @@ test("Passing a valid date to start starts at that point", async t => {
       startNewInterval,
       updateCurrentInterval
     },
-    date.toISOString()
+    date.toISOString(),
+    "Time"
   );
 
   t.false(fetchIntervals.called);
   t.true(startNewInterval.called);
   t.false(updateCurrentInterval.called);
 
-  t.deepEqual(startNewInterval.args, [[date]]);
+  t.deepEqual(startNewInterval.args, [[date, "Time"]]);
 });
 
 test("Passing an invalid date to start throws up and doesn't call the DB", async t => {
@@ -84,7 +87,8 @@ test("Passing an invalid date to start throws up and doesn't call the DB", async
         startNewInterval,
         updateCurrentInterval
       },
-      "=^^="
+      "=^^=",
+      "Time"
     );
     t.fail();
   } catch (e) {

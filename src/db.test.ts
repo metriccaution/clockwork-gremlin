@@ -3,7 +3,8 @@ import {
   compareTimes,
   TimeInterval,
   parseInterval,
-  parseTimestampFile
+  parseTimestampFile,
+  stringify
 } from "./db";
 
 /*
@@ -119,12 +120,14 @@ test("Parses a valid entry", t => {
 
   const expected = {
     start: date,
-    end: date
+    end: date,
+    project: "A thing"
   };
 
   const actual = parseInterval({
     start: date.toISOString(),
-    end: date.toISOString()
+    end: date.toISOString(),
+    project: "A thing"
   });
 
   t.deepEqual(expected, actual);
@@ -134,18 +137,21 @@ test("Parsing a timestamp file", t => {
   const expected = [
     {
       start: new Date(3),
-      end: new Date(5)
+      end: new Date(5),
+      project: undefined
     },
     {
       start: new Date(1),
-      end: new Date(2)
+      end: new Date(2),
+      project: "Time"
     }
   ];
 
   const actual = parseTimestampFile([
     {
       start: new Date(1).toISOString(),
-      end: new Date(2).toISOString()
+      end: new Date(2).toISOString(),
+      project: "Time"
     },
     {
       start: new Date(3).toISOString(),
@@ -184,4 +190,15 @@ test("Parsing a timestamp file fails when given an invalid entry", t => {
       }
     ])
   );
+});
+
+test("Parsing and stringifying round-trip", t => {
+  const initial: TimeInterval = {
+    project: "Somthing",
+    start: new Date(0),
+    end: new Date(1)
+  };
+
+  const roundTripped = parseInterval(stringify(initial));
+  t.deepEqual(initial, roundTripped);
 });

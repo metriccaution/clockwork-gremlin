@@ -32,5 +32,10 @@ export default convict({
     arg: "t",
     default: new Date().toISOString(),
     format: parseDate
+  },
+  project: {
+    doc: "The project chosen when not otherwise specified",
+    arg: "p",
+    default: "Time"
   }
 });

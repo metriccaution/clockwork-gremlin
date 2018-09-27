@@ -3,7 +3,8 @@ import config, { Commands } from "./config";
 import { help, start, stop, view } from "./commands";
 import { existsSync, lstatSync } from "fs";
 
-const configFile = config.get().configFile;
+const baseConfig = config.get();
+const { configFile, project } = baseConfig;
 if (existsSync(configFile) && lstatSync(configFile).isFile()) {
   config.loadFile(configFile);
 }
@@ -18,10 +19,10 @@ switch (args.command) {
     help();
     break;
   case Commands.Start:
-    start(db, args.time);
+    start(db, args.time, project);
     break;
   case Commands.Stop:
-    stop(db, args.time);
+    stop(db, args.time, project);
     break;
   case Commands.View:
     view(db);

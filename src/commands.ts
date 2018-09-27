@@ -2,14 +2,14 @@ import { TimeDb } from "./db";
 import { parseDate } from "./date";
 import { dailyReporter, weeklyReporter } from "./text-report";
 
-export const stop = async (db: TimeDb, time: string) => {
+export const stop = async (db: TimeDb, time: string, project: string) => {
   const date = parseDate(time);
-  await db.updateCurrentInterval(date);
+  await db.updateCurrentInterval(date, project);
 };
 
-export const start = async (db: TimeDb, time: string) => {
+export const start = async (db: TimeDb, time: string, project: string) => {
   const date = parseDate(time);
-  await db.startNewInterval(date);
+  await db.startNewInterval(date, project);
 };
 
 export const view = async (db: TimeDb) => {

@@ -3,14 +3,14 @@ import { promisify } from "util";
 import { parseDate } from "./date";
 
 export interface TimeInterval {
-  // TODO - Add different project support
+  project: string;
   start: Date;
   end: Date;
 }
 
 export interface TimeDb {
-  startNewInterval: (time: Date) => Promise<TimeInterval>;
-  updateCurrentInterval: (time: Date) => Promise<TimeInterval>;
+  startNewInterval: (time: Date, project: string) => Promise<TimeInterval>;
+  updateCurrentInterval: (time: Date, project: string) => Promise<TimeInterval>;
   fetchIntervals: () => Promise<TimeInterval[]>;
 }
 
@@ -21,9 +21,10 @@ export const compareTimes = (a: TimeInterval, b: TimeInterval): number =>
   b.start.getTime() - a.start.getTime() || b.end.getTime() - a.end.getTime();
 
 export const parseInterval = (entry: any) => {
-  const parsed = {
+  const parsed: TimeInterval = {
     start: parseDate(entry.start),
-    end: parseDate(entry.end)
+    end: parseDate(entry.end),
+    project: entry.project
   };
 
   if (parsed.end.getTime() < parsed.start.getTime()) {
@@ -43,9 +44,10 @@ export const parseTimestampFile = (data: any): TimeInterval[] => {
   return data.map(parseInterval).sort(compareTimes);
 };
 
-const stringify = (data: TimeInterval) => ({
+export const stringify = (data: TimeInterval) => ({
   start: data.start.toISOString(),
-  end: data.end.toISOString()
+  end: data.end.toISOString(),
+  project: data.project
 });
 
 const prepareFile = (data: TimeInterval[]): any[] => {
@@ -59,23 +61,23 @@ export class FileDb implements TimeDb {
     this.path = path;
   }
 
-  public async startNewInterval(time: Date) {
+  public async startNewInterval(time: Date, project: string) {
     const data = await this.loadDb();
-
     const newInterval = {
       start: time,
-      end: time
+      end: time,
+      project
     };
 
     await this.updateDb([newInterval, ...data]);
     return newInterval;
   }
 
-  public async updateCurrentInterval(time: Date) {
+  public async updateCurrentInterval(time: Date, project: string) {
     const data = await this.loadDb();
 
     if (data.length === 0) {
-      return this.startNewInterval(time);
+      return this.startNewInterval(time, project);
     }
 
     const last = data[0];
