@@ -11,6 +11,11 @@ export enum Commands {
 }
 
 export default convict({
+  configFile: {
+    doc: "The location of any additional config",
+    arg: "config",
+    default: resolve(__dirname, "..", "config.json")
+  },
   file: {
     doc: "The location of the database file",
     arg: "f",

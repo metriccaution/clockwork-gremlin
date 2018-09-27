@@ -1,6 +1,12 @@
 import { TimeDb, FileDb } from "./db";
 import config, { Commands } from "./config";
 import { help, start, stop, view } from "./commands";
+import { existsSync, lstatSync } from "fs";
+
+const configFile = config.get().configFile;
+if (existsSync(configFile) && lstatSync(configFile).isFile()) {
+  config.loadFile(configFile);
+}
 
 config.validate();
 
