@@ -4,6 +4,10 @@ import { start, stop } from "./commands";
 
 test("Passing a valid date to stop stops at that point", async t => {
   const date = new Date();
+  date.setHours(10);
+  date.setMinutes(10);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
 
   const fetchIntervals = sinon.spy();
   const startNewInterval = sinon.spy();
@@ -15,7 +19,7 @@ test("Passing a valid date to stop stops at that point", async t => {
       startNewInterval,
       updateCurrentInterval
     },
-    date.toISOString(),
+    "10:10",
     "Time"
   );
 
@@ -53,6 +57,10 @@ test("Passing an invalid date to stop throws up and doesn't call the DB", async 
 
 test("Passing a valid date to start starts at that point", async t => {
   const date = new Date();
+  date.setHours(15);
+  date.setMinutes(15);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
 
   const fetchIntervals = sinon.spy();
   const startNewInterval = sinon.spy();
@@ -64,7 +72,7 @@ test("Passing a valid date to start starts at that point", async t => {
       startNewInterval,
       updateCurrentInterval
     },
-    date.toISOString(),
+    "15:15",
     "Time"
   );
 

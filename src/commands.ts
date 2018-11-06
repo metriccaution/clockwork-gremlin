@@ -1,4 +1,4 @@
-import { parseDate } from "./date";
+import { parseTime } from "./date";
 import { TimeDb } from "./db";
 import { dailyReporter, weeklyReporter } from "./text-report";
 
@@ -9,12 +9,12 @@ const reportText = (...data: string[]) => console.log(...data);
 export const handleError = (e: Error) => console.log("Error", e);
 
 export const stop = async (db: TimeDb, time: string, project: string) => {
-  const date = parseDate(time);
+  const date = parseTime(time);
   await db.updateCurrentInterval(date, project);
 };
 
 export const start = async (db: TimeDb, time: string, project: string) => {
-  const date = parseDate(time);
+  const date = parseTime(time);
   await db.startNewInterval(date, project);
 };
 
