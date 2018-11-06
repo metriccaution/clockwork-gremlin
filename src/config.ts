@@ -1,7 +1,7 @@
 import * as convict from "convict";
 import { values } from "lodash";
 import { resolve } from "path";
-import { parseDate } from "./date";
+import { parseTime } from "./date";
 
 export enum Commands {
   Help = "help",
@@ -9,6 +9,8 @@ export enum Commands {
   Stop = "stop",
   View = "view"
 }
+
+const now = new Date();
 
 export default convict({
   configFile: {
@@ -30,8 +32,8 @@ export default convict({
   time: {
     doc: "The time of the command being run (when appropriate)",
     arg: "t",
-    default: new Date().toISOString(),
-    format: parseDate
+    default: `${now.getHours()}:${now.getMinutes()}`,
+    format: parseTime
   },
   project: {
     doc: "The project chosen when not otherwise specified",
