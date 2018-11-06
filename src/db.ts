@@ -101,7 +101,17 @@ export class FileDb implements TimeDb {
   }
 
   private async updateDb(data: TimeInterval[]) {
+    data.forEach(i => this.validateInterval(i));
+
     const contents = JSON.stringify(prepareFile(data), null, 4);
     await write(this.path, contents, "utf8");
+  }
+
+  private validateInterval(interval: TimeInterval) {
+    if (interval.start > interval.end) {
+      throw new Error(
+        `Invalid date entry: ${interval.start} is after ${interval.end}`
+      );
+    }
   }
 }
