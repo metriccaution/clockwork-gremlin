@@ -56,6 +56,9 @@ test("The month past December", invalidDate, "2018-13-19T19:02:49.471Z");
 test("Parsing a regular time", validTime, "10:00", timeToday(10, 0));
 test("Parsing midnight", validTime, "00:00", timeToday(0, 0));
 test("Parsing the end of the day", validTime, "23:59", timeToday(23, 59));
+test("Single digit time", validTime, "1:1", timeToday(1, 1));
+test("Paddeg single digit time", validTime, "1:01", timeToday(1, 1));
+test("Paddeg single digit time", validTime, "01:1", timeToday(1, 1));
 // Time - Invalid cases
 test("Non-parsable date", invalidTime, "Hello world");
 test("Negative time", invalidTime, "-01:11");

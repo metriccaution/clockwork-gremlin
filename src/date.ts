@@ -13,7 +13,7 @@ export const parseDate = (dateString: string): Date => {
  * Parse a time to that time, today
  */
 export const parseTime = (timeString: string): Date => {
-  const parsed = moment(timeString, "HH:mm", true);
+  const parsed = moment(timeString, "H:m", true);
   if (!parsed.isValid()) {
     throw new Error(`Couldn't parse ${timeString} as a time`);
   }
